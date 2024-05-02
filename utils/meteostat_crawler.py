@@ -1,3 +1,4 @@
+# Reference: I referenced the code from a friend and tweaked it accordingly.
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import pandas as pd
