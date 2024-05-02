@@ -1,7 +1,7 @@
 # Collecting Weather data using selenium on website
 
 ## Introduction
-This is a project that collects data from websites using Selenium tool to automate the web browsing process, thereby automating the data collection process.
+This is a project that collects data from websites using [Selenium](https://www.selenium.dev/) tool to automate the web browsing process, thereby automating the data collection process.
 
 This project uses selenium to automate the web browsing process. However, during the implementation process, I realized that the ads in the [Meteostat website](https://meteostat.net/en/) can cause the automatic data collection process to be interrupted and cause errors. So, after doing some research, I used the AdBlock extension to block ads, thereby making the process of collecting fewer errors and easier.
 
