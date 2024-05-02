@@ -49,6 +49,7 @@ os.chdir(dir_path) # Thay đổi thư mục làm việc hiện tại sang thư m
 def Initialize_driver():
   user_agents = [
     # Add your list of user agents here
+    # Bạn có thể xem thêm tại đây: https://www.whatismybrowser.com/guides/the-latest-user-agent/windows
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
@@ -60,17 +61,17 @@ def Initialize_driver():
 
   # select random user agent
   user_agent = random.choice(user_agents)
-
+  # Bạn cũng có thể tùy chọn cấu hình cho phù hợp với như cầu sử dụng
   chrome_options = webdriver.ChromeOptions()
-  chrome_options.add_argument("--no-sandbox")
-  chrome_options.add_argument("--headless=new")
-  chrome_options.add_argument("--disable-gpu")
-  chrome_options.add_argument("--start-maximized")
+  chrome_options.add_argument("--no-sandbox") # Không sử dụng sandbox
+  chrome_options.add_argument("--headless=new") # không sử dụng giao diện
+  chrome_options.add_argument("--disable-gpu") # disable gpu
+  chrome_options.add_argument("--start-maximized") 
   chrome_options.add_argument("--disable-infobars")
-  # chrome_options.add_argument("--disable-extensions")
-  chrome_options.add_argument('--log-level=3')
+  # chrome_options.add_argument("--disable-extensions") # Có cho phép sử dụng extensions trên agent hay không
+  chrome_options.add_argument('--log-level=3') # Log cấp 3: log error, warning and information
   chrome_options.set_capability("browserVersion", "117")
-  chrome_options.add_extension(os.path.join(extension_path,"AdBlock.crx"))
+  chrome_options.add_extension(os.path.join(extension_path,"AdBlock.crx")) # Extension bạn sẽ sử dụng
   chrome_options.add_experimental_option("excludeSwitches", ["enable-logging"])
   chrome_options.add_experimental_option("prefs", {
         "download.default_directory": os.path.abspath(dir_path),
@@ -79,7 +80,7 @@ def Initialize_driver():
         # "safebrowsing_for_trusted_sources_enabled": False,
         # "safebrowsing.enabled": False
         })
-  chrome_options.add_argument("--window-size=1366x768") # this should be your screen size
+  chrome_options.add_argument("--window-size=1366x768") # Kích thước của cửa sổ làm việc (nên là kích thước mìn hình máy tính của bạn)
   chrome_options.add_argument(f'user-agent={user_agent}')
   driver = webdriver.Chrome(options=chrome_options)
   stealth(driver,
@@ -93,7 +94,20 @@ def Initialize_driver():
   driver.implicitly_wait(20)
   return driver,wait
 
-def download_csv(dir_path,province_name,wait,driver):
+"""
+Sử dụng selenium thì trước tiên bạn cần phải thử trực tiếp bằng tay trên trang web, sau đó 
+bạn sẽ nắm được các bước mà bạn muốn agent của mình thực hiện theo các bước đó.
+
+Hãy chú ý đến quảng cáo của trang web, nếu quảng cáo gây ảnh hưởng đến toàn bộ của sổ làm việc
+cũng như làm thay đổi url của trang web thì chắc chắn rằng bạn cần phải sử dụng một công cụ chặn quảng cáo.
+Nếu quảng cáo không gây ảnh hưởng thì có thể không cần sử dụng công cụ chặn quảng cáo.
+
+Để sự dụng tốt selenium bạn cần phải kiểm tra cấu trúc source code của trang web bằng f12. Bạn cần biết chính xác từng nút
+cũng như event của chúng như nào, có làm thay đổi url không, nếu có hãy chia nhỏ các url này.
+
+"""
+
+def download_csv(dir_path,province_name,wait,driver): # Màb hình download dữ liệu, với định dạng được chọn là CSV
   old_filepath = os.path.join(dir_path,'export.csv')# This is where the downloaded save
   new_province_name = unidecode.unidecode(province_name.lower().replace(" ", "_"))
   new_filepath = os.path.join(dir_path,f'meteostat_dataset_{new_province_name}.csv')# This is where and new name we want to save it
